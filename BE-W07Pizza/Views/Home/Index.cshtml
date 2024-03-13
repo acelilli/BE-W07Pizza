@@ -29,15 +29,21 @@
                                 @if (!User.Identity.IsAuthenticated)
                                 {
                                     <div class="card-footer text-muted py-1" style="font-size:10pt">
-                                        <p class="my-0">Per aggiungere al carrello, entra o registrati:
-                                        <a href="@Url.Action("Login", "Utenti")" class="my-1 p-1">Entra</a>
+                                        <p class="my-0">
+                                            Per aggiungere al carrello, entra o registrati:
+                                            <a href="@Url.Action("Login", "Utenti")" class="my-1 p-1">Entra</a>
                                         </p>
-                                        
+
                                     </div>
                                 }
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a href="" class="btn btn-primary my-2">Aggiungi al carrello</a>
+                                    <form action="@Url.Action("Create", "DettagliOrdine")" method="post">
+                                        @Html.AntiForgeryToken() <!--sennò mi da errore-->
+                                        <input type="hidden" name="IDArticolo" value="@articolo.IDArticolo" />
+                                        <input type="number" name="Quantita" value="1" min="1" />
+                                        <button type="submit">Aggiungi al carrello</button>
+                                    </form>
                                 }
                             </div>
                         </div>

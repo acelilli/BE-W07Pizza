@@ -130,7 +130,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArticoliController.cs" />
+    <Compile Include="Controllers\DettagliOrdineController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdiniController.cs" />
     <Compile Include="Controllers\UtentiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -206,6 +208,16 @@
     <Content Include="Views\Articoli\Details.cshtml" />
     <Content Include="Views\Articoli\Edit.cshtml" />
     <Content Include="Views\Articoli\Index.cshtml" />
+    <Content Include="Views\Ordini\Create.cshtml" />
+    <Content Include="Views\Ordini\Delete.cshtml" />
+    <Content Include="Views\Ordini\Details.cshtml" />
+    <Content Include="Views\Ordini\Edit.cshtml" />
+    <Content Include="Views\Ordini\Index.cshtml" />
+    <Content Include="Views\DettagliOrdine\Create.cshtml" />
+    <Content Include="Views\DettagliOrdine\Delete.cshtml" />
+    <Content Include="Views\DettagliOrdine\Details.cshtml" />
+    <Content Include="Views\DettagliOrdine\Edit.cshtml" />
+    <Content Include="Views\DettagliOrdine\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,10 +22,13 @@
                     <li>@Html.ActionLink("Informazioni", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contatto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <!-- Visualizzabili SOLO DA GESTORE -->
-                    <li>@Html.ActionLink("Visualizza Utenti", "Index", "Utenti", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Visualizza Prodotti", "Index", "Articoli", new { area = "" }, new { @class = "nav-link" })</li>
-                    <!-- Edit / cancella prodotti -->
-                    <!-- Lista / Edit / Gestione ordini -->
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li>@Html.ActionLink("Visualizza Utenti", "Index", "Utenti", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Visualizza Prodotti", "Index", "Articoli", new { area = "" }, new { @class = "nav-link" })</li>
+                     <!-- Lista / Edit / Gestione ordini -->
+                    }
+
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
