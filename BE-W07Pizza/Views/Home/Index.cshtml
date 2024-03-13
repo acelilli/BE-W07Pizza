@@ -1,33 +1,49 @@
-﻿@{
+﻿@model List<BE_W07Pizza.Models.Articoli>
+@{
     ViewBag.Title = "Home Page";
 }
 
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+    <div class="container">
+        <div class="row">
+            @foreach (var articolo in Model)
+            {
+                if (articolo.Disponibile == true)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="@Url.Content(articolo.FotoArticolo)" class="card-img-top" style="object-fit: cover; height: 200px;" alt="Immagine articolo">
+                            <div class="card-body py-2 text-center">
+                                <h5 class="card-title">@articolo.NomeArticolo</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">@articolo.Ingredienti</li>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+                                    <li class="list-group-item">
+                                        Prezzo: @String.Format("{0:C}", articolo.Prezzo)
+                                    </li>
+                                    <li class="list-group-item">
+                                        Tempo di preparazione: @articolo.TempoPrepMin min
+                                    </li>
+                                </ul>
+                                <!-- Aggiungi qui eventuali altri dettagli -->
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <div class="card-footer text-muted py-1" style="font-size:10pt">
+                                        <p class="my-0">Per aggiungere al carrello, entra o registrati:
+                                        <a href="@Url.Action("Login", "Utenti")" class="my-1 p-1">Entra</a>
+                                        </p>
+                                        
+                                    </div>
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="" class="btn btn-primary my-2">Aggiungi al carrello</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
 </main>

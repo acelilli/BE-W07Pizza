@@ -129,6 +129,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArticoliController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UtentiController.cs" />
     <Compile Include="Global.asax.cs">
@@ -200,9 +201,15 @@
     <Content Include="Views\Utenti\Index.cshtml" />
     <Content Include="Views\Utenti\Login.cshtml" />
     <Content Include="Views\Utenti\Logout.cshtml" />
+    <Content Include="Views\Articoli\Create.cshtml" />
+    <Content Include="Views\Articoli\Delete.cshtml" />
+    <Content Include="Views\Articoli\Details.cshtml" />
+    <Content Include="Views\Articoli\Edit.cshtml" />
+    <Content Include="Views\Articoli\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

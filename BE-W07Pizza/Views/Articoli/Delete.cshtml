@@ -1,0 +1,72 @@
+﻿@model BE_W07Pizza.Models.Articoli
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Articoli</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NomeArticolo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NomeArticolo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FotoArticolo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FotoArticolo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prezzo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prezzo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TempoPrepMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TempoPrepMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredienti)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ingredienti)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Disponibile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Disponibile)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BE_W07Pizza.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,11 @@ namespace BE_W07Pizza.Controllers
 {
     public class HomeController : Controller
     {
+        readonly ModelDBContext db = new ModelDBContext();
         public ActionResult Index()
         {
-            return View();
+
+            return View(db.Articoli.ToList());
         }
 
         public ActionResult About()
