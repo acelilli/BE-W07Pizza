@@ -1,0 +1,42 @@
+﻿@model BE_W07Pizza.Models.Utenti
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h2 class="mb-0">Benvenuto in</h2>
+    <h1>Alice Pizza</h1>
+    <p>Per iniziare a comprare le nostre pizze, entra con il tuo account!</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-light my-2">Entra</a>
+
+}
+else
+{
+    <h2>Login</h2>
+    <form action="@Url.Action("Login", "Utenti")" method="post">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NomeUtente)
+            @Html.TextBoxFor(model => model.NomeUtente, new { @class = "form-control", placeholder = "Username" })
+            @Html.ValidationMessageFor(model => model.NomeUtente, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary my-2">Entra</button>
+            <a href="@Url.Action("Create", "Utenti")" class="btn btn-light my-2 my-sm-0">Registrati</a>
+        </div>
+    </form>
+
+    <div class="text-danger">
+        @ViewBag.AuthError
+    </div>
+}

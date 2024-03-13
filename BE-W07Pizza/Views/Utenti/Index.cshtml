@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BE_W07Pizza.Models.Utenti>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NomeUtente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ruolo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NomeUtente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ruolo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDUtente }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IDUtente }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IDUtente })
+        </td>
+    </tr>
+}
+
+</table>
