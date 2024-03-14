@@ -58,26 +58,6 @@ namespace BE_W07Pizza.Controllers
             return View(utenti);
         }
 
-        //////
-        ////// DATIUTENTEORDINE ////////////////////////////////////////////////////////////////////////
-        // Azione che si lega al pulsante => Permette di modificare i dati dell'utente (legati alla classe/tabella ORDINI)
-        // RIceve come parametro l'utente e ritorna la pagina Details di utente.
-        ///  Esperimento coi modali 
-        /// 
-        [HttpPost]
-        public ActionResult ModificaDatiOrdine(Ordini ordine)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(ordine).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Details", "Utenti", new { id = ordine.IDUtente });
-            }
-            return View(ordine);
-        }
-
-
-
         // GET: Utenti/Create
         public ActionResult Create()
         {

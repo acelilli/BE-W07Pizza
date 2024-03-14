@@ -82,8 +82,19 @@ namespace BE_W07Pizza.Controllers
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDOrdine,IDUtente,Nome,Cognome,Indirizzo,Note,Evaso")] Ordini ordini)
+        public ActionResult Edit([Bind(Include = "IDOrdine,Nome,Cognome,Indirizzo,Note,Evaso")] Ordini ordini)
         {
+            // Recupera l'ID utente dal cookie
+            int idUtente = 0; // Valore predefinito nel caso in cui non sia possibile recuperare l'ID utente dai cookie
+            HttpCookie cookie = Request.Cookies["IDUserCookie"];
+            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+            {
+                idUtente = Convert.ToInt32(cookie.Value);
+            }
+
+            // Imposta l'ID utente nell'entità Ordini
+            ordini.IDUtente = idUtente;
+
             if (ModelState.IsValid)
             {
                 db.Entry(ordini).State = EntityState.Modified;
@@ -93,6 +104,7 @@ namespace BE_W07Pizza.Controllers
             ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente", ordini.IDUtente);
             return View(ordini);
         }
+
 
         // GET: Ordini/Delete/5
         public ActionResult Delete(int? id)
