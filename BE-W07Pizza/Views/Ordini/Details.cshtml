@@ -49,18 +49,20 @@
         <dd>
             @Html.DisplayFor(model => model.Note)
         </dd>
+        @if (User.IsInRole("admin"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Evaso)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Evaso)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Evaso)
-        </dd>
-
-    </dl>
+            <dd>
+                @Html.DisplayFor(model => model.Evaso)
+            </dd>
+        }
+        </dl>
 </div>
 <p>
+
     @Html.ActionLink("Edit", "Edit", new { id = Model.IDOrdine }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

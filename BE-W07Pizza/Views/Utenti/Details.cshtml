@@ -4,47 +4,105 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Dettagli Utente</h2>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.NomeUtente)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.NomeUtente)
+                        </dd>
 
-<div>
-    <h4>Utenti</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.NomeUtente)
-        </dt>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Password)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Password)
+                        </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.NomeUtente)
-        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Ruolo)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Ruolo)
+                            </dd>
+                        }
+                    </dl>
+                </div>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="card-footer text-right">
+                        @Html.ActionLink("Modifica", "Edit", new { id = Model.IDUtente }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Torna alla Lista", "Index", null, new { @class = "btn btn-secondary" })
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">I Tuoi Ordini</h2>
+                    <hr />
+                    @if (Model.Ordini.Any())
+                    {
+                        foreach (var ordine in Model.Ordini)
+                        {
+                            <div class="mt-3">
+                                <h3>Numero Ordine: @ordine.IDOrdine</h3>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="mb-0">Dettagli dell'Ordine</h4>
+                                        <a href="@Url.Action("Edit", "Ordini", new { id = ordine.IDOrdine })" class="btn btn-primary">Modifica I tuoi dati</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-3">Nome Cliente:</dt>
+                                            <dd class="col-sm-9">@($"{ordine.Nome} {ordine.Cognome}")</dd>
+                                            <dt class="col-sm-3">Indirizzo Spedizione:</dt>
+                                            <dd class="col-sm-9">@ordine.Indirizzo</dd>
+                                            <dt class="col-sm-3">Note:</dt>
+                                            <dd class="col-sm-9">@ordine.Note</dd>
+                                            <dt class="col-sm-3">Evaso:</dt>
+                                            <dd class="col-sm-9">@((ordine.Evaso.HasValue && ordine.Evaso.Value) ? "Sì" : "No")</dd>
+                                        </dl>
+                                        <hr />
+                                        <h4 class="card-title">Dettagli degli Articoli:</h4>
+                                        <h6 class="mb-0">Quantità Articolo:</h6>
+                                        <ul class="list-group">
+                                            
+                                            @foreach (var dettaglio in ordine.DettagliOrdine)
+                                            {
+                                                <li class="list-group-item">
+                                                    <p>@dettaglio.Quantita - @dettaglio.Articoli.NomeArticolo</p>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ruolo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Ruolo)
-        </dd>
-
-    </dl>
+                        }
+                    }
+                    else
+                    {
+                        <p>Nessun ordine trovato per questo utente.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDUtente }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

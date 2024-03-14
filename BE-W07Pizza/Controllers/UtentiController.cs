@@ -33,13 +33,13 @@ namespace BE_W07Pizza.Controllers
                 idUtente = Convert.ToInt32(cookie.Value);
             }
 
-            // Se l'ID non è stato fornito come parametro, utilizza l'ID dell'utente dal cookie
+            // Se non lo prendiamo dall'elenco utenti -> prende l'ID dal cookie
             if (id == null)
             {
                 id = idUtente;
             }
 
-            // Controlla se id è ancora null
+            // Se è null
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,9 +51,32 @@ namespace BE_W07Pizza.Controllers
             {
                 return HttpNotFound();
             }
+            // Nella tabella ordine ( + dettagli Ordine ) trova IDUtente associato -> lista
+            var ordiniUtenteDettagli = db.Ordini.Include("DettagliOrdine")
+                .Where(o => o.IDUtente == id).ToList();
 
             return View(utenti);
         }
+
+        //////
+        ////// DATIUTENTEORDINE ////////////////////////////////////////////////////////////////////////
+        // Azione che si lega al pulsante => Permette di modificare i dati dell'utente (legati alla classe/tabella ORDINI)
+        // RIceve come parametro l'utente e ritorna la pagina Details di utente.
+        ///  Esperimento coi modali 
+        /// 
+        [HttpPost]
+        public ActionResult ModificaDatiOrdine(Ordini ordine)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(ordine).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Details", "Utenti", new { id = ordine.IDUtente });
+            }
+            return View(ordine);
+        }
+
+
 
         // GET: Utenti/Create
         public ActionResult Create()

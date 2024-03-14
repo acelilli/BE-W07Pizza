@@ -132,16 +132,17 @@ namespace BE_W07Pizza.Controllers
             }
             base.Dispose(disposing);
         }
-        ///
-        /////////////////// AGGIUNGI AL CARRELLO ///////////////////////
 
+
+        ////////////////////////////////////////////////////////////////
+        /////////////////// AGGIUNGI AL CARRELLO ///////////////////////
         [HttpPost]
         public ActionResult AggiungiAlCarrello(int idArticolo)
         {
             try
             {
                 // Recupera l'ID dell'utente dal cookie
-                int idUtente = 0; // Valore predefinito nel caso in cui non sia possibile recuperare l'IDUtente dal cookie
+                int idUtente = 0; // Valore predefinito 
                 HttpCookie cookie = Request.Cookies["IDUserCookie"];
                 if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
                 {
@@ -168,7 +169,7 @@ namespace BE_W07Pizza.Controllers
                         db.Ordini.Add(ordine);
                         db.SaveChanges();
 
-                        // Aggiungi il dettaglio dell'ordine all'Ordine appena creato
+                        // Aggiungi il dettaglio dell'ordine all'Ordine (new)
                         DettagliOrdine dettaglioOrdine = new DettagliOrdine
                         {
                             IDOrdine = ordine.IDOrdine,
@@ -195,14 +196,14 @@ namespace BE_W07Pizza.Controllers
                 }
                 else
                 {
-                    // Gestisci il caso in cui non è stato possibile recuperare l'ID dell'utente dal cookie
+                    // SE non riesce a prendere l'IDUtente dal cookie
                     ViewBag.ErrorMessage = "Si è verificato un problema durante l'aggiunta al carrello. Per favore, effettua nuovamente il login.";
                     return RedirectToAction("Login", "Utenti");
                 }
             }
             catch (Exception ex)
             {
-                // Gestisci eventuali eccezioni
+                // Varie ed eventuali
                 ViewBag.ErrorMessage = "Si è verificato un errore durante l'aggiunta al carrello: " + ex.Message;
                 return RedirectToAction("Index", "Home");
             }
