@@ -23,18 +23,35 @@ namespace BE_W07Pizza.Controllers
         }
 
         // GET: Utenti/Details/5
-        [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
+            // Recupera l'ID dell'utente dal cookie
+            int idUtente = 0; // Valore predefinito nel caso in cui non sia possibile recuperare l'IDUtente dal cookie
+            HttpCookie cookie = Request.Cookies["IDUserCookie"];
+            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+            {
+                idUtente = Convert.ToInt32(cookie.Value);
+            }
+
+            // Se l'ID non è stato fornito come parametro, utilizza l'ID dell'utente dal cookie
+            if (id == null)
+            {
+                id = idUtente;
+            }
+
+            // Controlla se id è ancora null
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            // Trova l'utente corrispondente all'ID
             Utenti utenti = db.Utenti.Find(id);
             if (utenti == null)
             {
                 return HttpNotFound();
             }
+
             return View(utenti);
         }
 
@@ -148,6 +165,10 @@ namespace BE_W07Pizza.Controllers
                 if (utente != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.NomeUtente, false);
+                    HttpCookie EnterCookie = new HttpCookie("IDUserCookie");
+                    EnterCookie.Value = utente.IDUtente.ToString();
+                    EnterCookie.Expires = DateTime.Now.AddHours(1);
+                    Response.Cookies.Add(EnterCookie);
                     return RedirectToAction("Index", "Home");
                 }
                 else

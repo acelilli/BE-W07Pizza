@@ -6,10 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using BE_W07Pizza.Models;
-using Microsoft.Ajax.Utilities;
-using Microsoft.AspNet.Identity;
 
 namespace BE_W07Pizza.Controllers
 {
@@ -42,8 +39,7 @@ namespace BE_W07Pizza.Controllers
         // GET: Ordini/Create
         public ActionResult Create()
         {
-           // Se il modello non è valido o l'utente non è autenticato, reimane lì
-            // Default: ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente");
+            ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente");
             return View();
         }
 
@@ -54,27 +50,13 @@ namespace BE_W07Pizza.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDOrdine,IDUtente,Nome,Cognome,Indirizzo,Note,Evaso")] Ordini ordini)
         {
-            if (ModelState.IsValid && User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                var userId = 0;
-                try
-                {
-                   userId = User.Identity.GetUserId().AsInt();
-                   ordini.IDUtente = userId;
-                }
-                catch(Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("Errore" + ex.Message);
-
-                }
-                // Queste tre righe sono la parte di default del metodo create
                 db.Ordini.Add(ordini);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-                // Fine parte di defautl
             }
 
-            // altra parte di default ch sta fuori dall'if ModelState.IsValid
             ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente", ordini.IDUtente);
             return View(ordini);
         }

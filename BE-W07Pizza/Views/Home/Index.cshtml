@@ -38,11 +38,10 @@
                                 }
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <form action="@Url.Action("Create", "DettagliOrdine")" method="post">
+                                    <form action="@Url.Action("AggiungiAlCarrello", "DettagliOrdine")" method="post">
                                         @Html.AntiForgeryToken() <!--sennò mi da errore-->
                                         <input type="hidden" name="IDArticolo" value="@articolo.IDArticolo" />
-                                        <input type="number" name="Quantita" value="1" min="1" />
-                                        <button type="submit">Aggiungi al carrello</button>
+                                        <button type="submit" class="btn btn-light">Aggiungi al carrello</button>
                                     </form>
                                 }
                             </div>

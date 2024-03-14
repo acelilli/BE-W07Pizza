@@ -32,6 +32,14 @@ nav,
     font-style: normal;
 }
 
+.logo-container {
+    border-radius: 50%; /* rendi il contenitore circolare */
+    background-color: #fff; /* impostare il colore di sfondo desiderato */
+    padding: 5px; /* spazio intorno al logo */
+}
+
+
+
     .card h5,
     .card a {
         color: #D9BB63;
