@@ -170,13 +170,13 @@ namespace BE_W07Pizza.Controllers
                         db.Ordini.Add(ordine);
                         db.SaveChanges();
 
-                        // FASE 4: Crea il cookie IDOrdineCookie e impostalo con l'ID dell'ordine appena creato
+                        // FASE 4: Crea il cookie IDOrdineCookie 
                         HttpCookie IDOrdineCookie = new HttpCookie("IDOrdineCookie");
                         IDOrdineCookie.Value = ordine.IDOrdine.ToString();
                         IDOrdineCookie.Expires = DateTime.Now.AddHours(9);
                         Response.Cookies.Add(IDOrdineCookie);
 
-                        // FASE 6: Aggiungi il dettaglio dell'ordine all'Ordine (new)
+                        // FASE 5: Aggiungi il dettaglio dell'ordine all'Ordine (new)
                         DettagliOrdine dettaglioOrdine = new DettagliOrdine
                         {
                             IDOrdine = ordine.IDOrdine,
@@ -187,7 +187,7 @@ namespace BE_W07Pizza.Controllers
                     }
                     else
                     {
-                        // FASE 7: ORDINE evaso = false, quindi aggiungo il dettaglioOrdine a Ordine esistente
+                        // FASE 6: ORDINE evaso = false, quindi aggiungo il dettaglioOrdine a Ordine esistente
                         DettagliOrdine dettaglioOrdine = new DettagliOrdine
                         {
                             IDOrdine = ordineEsistente.IDOrdine,

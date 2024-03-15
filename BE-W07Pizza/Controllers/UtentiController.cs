@@ -26,7 +26,7 @@ namespace BE_W07Pizza.Controllers
         public ActionResult Details(int? id)
         {
             // Recupera l'ID dell'utente dal cookie
-            int idUtente = 0; // Valore predefinito nel caso in cui non sia possibile recuperare l'IDUtente dal cookie
+            int idUtente = 0; // Valore predefinito
             HttpCookie cookie = Request.Cookies["IDUserCookie"];
             if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
             {
@@ -149,7 +149,8 @@ namespace BE_W07Pizza.Controllers
             }
             base.Dispose(disposing);
         }
-
+        //////////////////////
+        //////////////////////////////////////////////////////////////////
         //////// LOGIN //////////////////////
         [AllowAnonymous]
         [HttpGet]
@@ -167,6 +168,7 @@ namespace BE_W07Pizza.Controllers
 
                 if (utente != null)
                 {
+                    // Per visualizzare gli ordini per cliente ecc -> salvo l'idUtente nei cookies
                     FormsAuthentication.SetAuthCookie(user.NomeUtente, false);
                     HttpCookie EnterCookie = new HttpCookie("IDUserCookie");
                     EnterCookie.Value = utente.IDUtente.ToString();

@@ -46,7 +46,7 @@ namespace BE_W07Pizza.Controllers
                 id = idOrdine;
             }
 
-            // Se l'ID dell'ordine è ancora null, restituisci un errore BadRequest
+            // Se l'ID dell'ordine è ancora null BadRequest
             if (id == null || id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,11 +56,10 @@ namespace BE_W07Pizza.Controllers
             Ordini ordine = db.Ordini.Find(id);
             if (ordine == null)
             {
-                // Se non viene trovato alcun ordine corrispondente all'ID, restituisci un errore HttpNotFound
                 return HttpNotFound();
             }
 
-            // Ora che abbiamo l'ID dell'ordine, possiamo eseguire ulteriori operazioni, come trovare i dettagli dell'ordine associati
+            // Trovare i dettagli dell'ordine associati
             var dettagliOrdine = db.DettagliOrdine.Where(d => d.IDOrdine == id).ToList();
             ViewBag.OrdineCorrente = ordine;
             ViewBag.DettagliOrdine = dettagliOrdine;
@@ -127,12 +126,12 @@ namespace BE_W07Pizza.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Recupera l'ordine esistente dal contesto del database
+                // Recupera l'ordine dal database
                 var existingOrder = db.Ordini.Find(ordini.IDOrdine);
 
                 if (existingOrder != null)
                 {
-                    // Applica le modifiche all'ordine esistente
+                    // Applica le modifiche
                     existingOrder.Nome = ordini.Nome;
                     existingOrder.Cognome = ordini.Cognome;
                     existingOrder.Indirizzo = ordini.Indirizzo;
@@ -147,12 +146,9 @@ namespace BE_W07Pizza.Controllers
                 }
                 else
                 {
-                    // Se l'ordine non esiste, restituisci un errore
                     return HttpNotFound();
                 }
             }
-
-            // Se il modello di dati non è valido, torna alla vista di modifica con i dati inseriti
             ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente", ordini.IDUtente);
             return View(ordini);
         }
