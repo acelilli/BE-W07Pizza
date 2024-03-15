@@ -141,7 +141,7 @@ namespace BE_W07Pizza.Controllers
         {
             try
             {
-                // Recupera l'ID dell'utente dal cookie
+                // FASE 1: Recupero l'ID dell'utente dal cookie
                 int idUtente = 0; // Valore predefinito 
                 HttpCookie cookie = Request.Cookies["IDUserCookie"];
                 if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
@@ -151,12 +151,11 @@ namespace BE_W07Pizza.Controllers
 
                 if (idUtente != 0)
                 {
-                    // Cerca un ordine non evaso per l'utente corrente
+                    // FASE 2: Cerco un ordine non evaso per l'utente corrente
                     Ordini ordineEsistente = db.Ordini.FirstOrDefault(o => o.IDUtente == idUtente && o.Evaso == false);
-
                     if (ordineEsistente == null)
                     {
-                        // Nessun ordine non evaso esistente =>  crea un nuovo ordine
+                        // FASE 3: Nessun ordine non evaso esistente =>  creo un nuovo ordine
                         Ordini ordine = new Ordini
                         {
                             IDUtente = idUtente,
@@ -166,21 +165,28 @@ namespace BE_W07Pizza.Controllers
                             Note = "Note per la cucina (allergie, intolleranze), o per la consegna (piano, campanello, scala)",
                             Evaso = false
                         };
+
                         db.Ordini.Add(ordine);
                         db.SaveChanges();
 
-                        // Aggiungi il dettaglio dell'ordine all'Ordine (new)
+                        // FASE 4: Crea il cookie IDOrdineCookie e impostalo con l'ID dell'ordine appena creato
+                        HttpCookie IDOrdineCookie = new HttpCookie("IDOrdineCookie");
+                        IDOrdineCookie.Value = ordine.IDOrdine.ToString();
+                        IDOrdineCookie.Expires = DateTime.Now.AddHours(9);
+                        Response.Cookies.Add(IDOrdineCookie);
+
+                        // FASE 6: Aggiungi il dettaglio dell'ordine all'Ordine (new)
                         DettagliOrdine dettaglioOrdine = new DettagliOrdine
                         {
                             IDOrdine = ordine.IDOrdine,
                             IDArticolo = idArticolo,
-                            Quantita = 1, 
+                            Quantita = 1,
                         };
                         db.DettagliOrdine.Add(dettaglioOrdine);
                     }
                     else
                     {
-                        // ORDINE evaso = false, quindi aggiungo il dettaglioOrdine a Ordine esistente
+                        // FASE 7: ORDINE evaso = false, quindi aggiungo il dettaglioOrdine a Ordine esistente
                         DettagliOrdine dettaglioOrdine = new DettagliOrdine
                         {
                             IDOrdine = ordineEsistente.IDOrdine,
@@ -189,7 +195,6 @@ namespace BE_W07Pizza.Controllers
                         };
                         db.DettagliOrdine.Add(dettaglioOrdine);
                     }
-
                     db.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
@@ -203,11 +208,13 @@ namespace BE_W07Pizza.Controllers
             }
             catch (Exception ex)
             {
-                // Varie ed eventuali
+                // Gestione delle eccezioni
                 ViewBag.ErrorMessage = "Si è verificato un errore durante l'aggiunta al carrello: " + ex.Message;
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
 
 
     }

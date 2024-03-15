@@ -2,7 +2,12 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
+@if (TempData["Messaggio"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Messaggio"]
+    </div>
+}
 <main>
     <div class="container">
         <div class="row">

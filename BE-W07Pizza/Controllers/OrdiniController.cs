@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -24,17 +25,47 @@ namespace BE_W07Pizza.Controllers
         // GET: Ordini/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            // Recupera l'ID ordine dal cookie
+            int idOrdine = 0;
+            HttpCookie ordineCookie = Request.Cookies["IDOrdineCookie"];
+            if (ordineCookie != null && !string.IsNullOrEmpty(ordineCookie.Value))
+            {
+                idOrdine = Convert.ToInt32(ordineCookie.Value);
+            }
+            else
+            {
+                TempData["Messaggio"] = "Questo utente non ha ordini attivi!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Se l'ID non è specificato, assegnamo l'ID recuperato dal cookie
+            if (!id.HasValue)
+            {
+                id = idOrdine;
+            }
+
+            // Se l'ID dell'ordine è ancora null, restituisci un errore BadRequest
+            if (id == null || id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ordini ordini = db.Ordini.Find(id);
-            if (ordini == null)
+
+            // Trova l'ordine corrispondente all'ID
+            Ordini ordine = db.Ordini.Find(id);
+            if (ordine == null)
             {
+                // Se non viene trovato alcun ordine corrispondente all'ID, restituisci un errore HttpNotFound
                 return HttpNotFound();
             }
-            return View(ordini);
+
+            // Ora che abbiamo l'ID dell'ordine, possiamo eseguire ulteriori operazioni, come trovare i dettagli dell'ordine associati
+            var dettagliOrdine = db.DettagliOrdine.Where(d => d.IDOrdine == id).ToList();
+            ViewBag.OrdineCorrente = ordine;
+            ViewBag.DettagliOrdine = dettagliOrdine;
+
+            return View(ordine);
         }
+
 
         // GET: Ordini/Create
         public ActionResult Create()
@@ -126,9 +157,27 @@ namespace BE_W07Pizza.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Ordini ordini = db.Ordini.Find(id);
-            db.Ordini.Remove(ordini);
-            db.SaveChanges();
+            int idUtente = 0; // Valore predefinito 
+            HttpCookie cookie = Request.Cookies["IDUserCookie"];
+            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+            {
+                idUtente = Convert.ToInt32(cookie.Value);
+            }
+
+            Ordini ordini;
+            ordini = db.Ordini.Find(id);
+
+            // Se l'ordine esiste
+            if (ordini != null)
+            {
+                // Imposta l'ID utente nell'entità Ordini
+                ordini.IDUtente = idUtente;
+                db.Ordini.Remove(ordini);
+                // Rimuovi tutti i dettagli correlati
+                var dettagliCorrelati = db.DettagliOrdine.Where(d => d.IDOrdine == id);
+                db.DettagliOrdine.RemoveRange(dettagliCorrelati);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
