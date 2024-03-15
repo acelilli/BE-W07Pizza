@@ -99,7 +99,7 @@ namespace BE_W07Pizza.Controllers
             {
                 db.Entry(ordini).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Utenti");
             }
             ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente", ordini.IDUtente);
             return View(ordini);

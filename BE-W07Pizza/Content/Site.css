@@ -33,9 +33,12 @@ nav,
 }
 
 .logo-container {
-    border-radius: 50%; /* rendi il contenitore circolare */
-    background-color: #fff; /* impostare il colore di sfondo desiderato */
-    padding: 5px; /* spazio intorno al logo */
+    border-radius: 50%;
+    background-color: rgb(0, 0, 0, 55%); 
+    padding: 2rem 2.5rem;
+    display: block;
+    align-items: center;
+    justify-content: center;
 }
 
 
