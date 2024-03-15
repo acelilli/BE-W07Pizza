@@ -2,6 +2,7 @@ namespace BE_W07Pizza.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -34,7 +35,13 @@ namespace BE_W07Pizza.Models
 
         public string Note { get; set; }
 
+        [DefaultValue(false)]
         public bool? Evaso { get; set; }
+
+        [DefaultValue(false)]
+        public bool? ConfermaOrdine { get; set; }
+
+        public DateTime? DataEvasione { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DettagliOrdine> DettagliOrdine { get; set; }

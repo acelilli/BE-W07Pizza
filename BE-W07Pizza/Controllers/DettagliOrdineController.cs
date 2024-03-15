@@ -133,7 +133,6 @@ namespace BE_W07Pizza.Controllers
             base.Dispose(disposing);
         }
 
-
         ////////////////////////////////////////////////////////////////
         /////////////////// AGGIUNGI AL CARRELLO ///////////////////////
         [HttpPost]
@@ -163,7 +162,9 @@ namespace BE_W07Pizza.Controllers
                             Cognome = "Cognome placeholder",
                             Indirizzo = "Via/strada/piazza",
                             Note = "Note per la cucina (allergie, intolleranze), o per la consegna (piano, campanello, scala)",
-                            Evaso = false
+                            Evaso = false,
+                            ConfermaOrdine = false,
+                            DataEvasione = null,
                         };
 
                         db.Ordini.Add(ordine);
@@ -213,9 +214,5 @@ namespace BE_W07Pizza.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-
-
-
     }
 }

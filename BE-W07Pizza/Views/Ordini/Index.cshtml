@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table text-bg-light">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Utenti.NomeUtente)
@@ -26,8 +26,15 @@
         <th>
             @Html.DisplayNameFor(model => model.Note)
         </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ConfermaOrdine)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Evaso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataEvasione)
         </th>
         <th></th>
     </tr>
@@ -50,12 +57,18 @@
             @Html.DisplayFor(modelItem => item.Note)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.ConfermaOrdine)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Evaso)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IDOrdine }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IDOrdine }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IDOrdine })
+            @Html.DisplayFor(modelItem => item.DataEvasione)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.IDOrdine }) |
+            @Html.ActionLink("Details", "Details", new { id = item.IDOrdine }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.IDOrdine })
         </td>
     </tr>
 }

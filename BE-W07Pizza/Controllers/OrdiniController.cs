@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,6 +17,7 @@ namespace BE_W07Pizza.Controllers
         private ModelDBContext db = new ModelDBContext();
 
         // GET: Ordini
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             var ordini = db.Ordini.Include(o => o.Utenti);
@@ -77,12 +79,17 @@ namespace BE_W07Pizza.Controllers
         // POST: Ordini/Create
         // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Ordini/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDOrdine,IDUtente,Nome,Cognome,Indirizzo,Note,Evaso")] Ordini ordini)
+        public ActionResult Create([Bind(Include = "IDOrdine,IDUtente,Nome,Cognome,Indirizzo,Note,Evaso,ConfermaOrdine,DataEvasione")] Ordini ordini)
         {
             if (ModelState.IsValid)
             {
+                //ConfermaOrdine = da impostare manualmente quando l'utente conferma l'ordine)
+                ordini.ConfermaOrdine = false;
+                ordini.DataEvasione = null;
+
                 db.Ordini.Add(ordini);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -111,27 +118,41 @@ namespace BE_W07Pizza.Controllers
         // POST: Ordini/Edit/5
         // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
         // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Ordini/Edit/5
+        // Per la protezione da attacchi di overposting, abilitare le proprietà a cui eseguire il binding. 
+        // Per altri dettagli, vedere https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDOrdine,Nome,Cognome,Indirizzo,Note,Evaso")] Ordini ordini)
+        public ActionResult Edit([Bind(Include = "IDOrdine,Nome,Cognome,Indirizzo,Note,Evaso,ConfermaOrdine,DataEvasione")] Ordini ordini)
         {
-            // Recupera l'ID utente dal cookie
-            int idUtente = 0; // Valore predefinito nel caso in cui non sia possibile recuperare l'ID utente dai cookie
-            HttpCookie cookie = Request.Cookies["IDUserCookie"];
-            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
-            {
-                idUtente = Convert.ToInt32(cookie.Value);
-            }
-
-            // Imposta l'ID utente nell'entità Ordini
-            ordini.IDUtente = idUtente;
-
             if (ModelState.IsValid)
             {
-                db.Entry(ordini).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Details", "Utenti");
+                // Recupera l'ordine esistente dal contesto del database
+                var existingOrder = db.Ordini.Find(ordini.IDOrdine);
+
+                if (existingOrder != null)
+                {
+                    // Applica le modifiche all'ordine esistente
+                    existingOrder.Nome = ordini.Nome;
+                    existingOrder.Cognome = ordini.Cognome;
+                    existingOrder.Indirizzo = ordini.Indirizzo;
+                    existingOrder.Note = ordini.Note;
+                    existingOrder.Evaso = ordini.Evaso;
+                    existingOrder.ConfermaOrdine = ordini.ConfermaOrdine;
+                    existingOrder.DataEvasione = ordini.DataEvasione;
+
+                    // Salva le modifiche nel database
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = ordini.IDOrdine });
+                }
+                else
+                {
+                    // Se l'ordine non esiste, restituisci un errore
+                    return HttpNotFound();
+                }
             }
+
+            // Se il modello di dati non è valido, torna alla vista di modifica con i dati inseriti
             ViewBag.IDUtente = new SelectList(db.Utenti, "IDUtente", "NomeUtente", ordini.IDUtente);
             return View(ordini);
         }

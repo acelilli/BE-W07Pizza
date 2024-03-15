@@ -10,12 +10,13 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Ordini</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.IDOrdine)
+    @Html.HiddenFor(model => model.ConfermaOrdine)
 
 
     <div class="form-group">
@@ -49,6 +50,19 @@
             @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
         </div>
     </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ConfermaOrdine, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.ConfermaOrdine)
+                @Html.ValidationMessageFor(model => model.ConfermaOrdine, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+
     @if (User.IsInRole("admin"))
     {
         <div class="form-group">
@@ -61,12 +75,12 @@
             </div>
         </div>
     }
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default btn-light" />
         </div>
     </div>
+</div>
 }
 
 <div>

@@ -76,8 +76,12 @@
                                             <dd class="col-sm-9">@ordine.Indirizzo</dd>
                                             <dt class="col-sm-3">Note:</dt>
                                             <dd class="col-sm-9">@ordine.Note</dd>
+                                            <dt class="col-sm-3">Confermato:</dt>
+                                            <dd class="col-sm-9">@((ordine.ConfermaOrdine.HasValue && ordine.ConfermaOrdine.Value == true) ? "Sì" : "No")</dd>
                                             <dt class="col-sm-3">Evaso:</dt>
                                             <dd class="col-sm-9">@((ordine.Evaso.HasValue && ordine.Evaso.Value) ? "Sì" : "No")</dd>
+                                            <dt>Data Completamento:</dt>
+                                            <dd class="col-sm-9">@ordine.DataEvasione</dd>
                                         </dl>
                                         <hr />
                                         <h4 class="card-title">Dettagli degli Articoli:</h4>
